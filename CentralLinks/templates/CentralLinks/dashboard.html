@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="LinkSafe es la herramienta minimalista para gestionar tus enlaces importantes. Rápido, seguro y siempre a mano.">
+
+<meta property="og:title" content="LinkSafe - Gestor de Enlaces">
+<meta property="og:description" content="Organiza tus links favoritos en un solo lugar.">
+<meta property="og:type" content="website">
+    <!--Esto debe ir primero (me refiero a la fuente), 
+    donde la dejes despues del styles.css arruinas la página-->
+    <!--Carga de la fuente desde google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+<!--NOTA: No toques el código porque arruinas la fuente, Ojito eh...-->
+
+<!--Icono de more, proviene de Google así que ten cuidado en el soporte técnico
+Puede que actualicen la librería, si esto pasa puedes usar el icono + regular del teclado
+así te ahorras la carga tonta de links de otras fuentes
+-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkSafe Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'CentralLinks/styles.css' %}">
+    <link rel="icon" href="{% static 'CentralLinks/ICONO_LINK.ico' %}" type="image/x-icon">
+</head>
+<body>
+    <header class="Header">
+        <h1 class="LinkSafe_title">
+            Link<span class="Resaltador">Safe</span>
+        </h1>
+    </header>
+    
+    <main class="Main">
+        <section class="seccion_likns">
+
+            <form method="get" class="busquedas_container" action="{% url 'search_links' %}">
+                <input 
+                type="search" 
+                placeholder="Type any link title" 
+                class="Search_Input" 
+                name="q" 
+                value="{{ request.GET.q }}"
+                >
+
+                <button class="Search_button" type="submit" >Search</button>
+            </form>
+
+
+            <div class="titile_your_links_container">
+                <h2 class="your_links">Your Links</h2>
+            </div>
+            
+            <div class="links_container">
+                <ul class="inner_ul_container">
+                    {% for bridge in elementos %}
+                    <li class="lista_links">
+                        <p class="Formal_Link">{{ bridge.URL }}</p>
+                        <p class="Title">{{ bridge.title }}</p>
+                            <button class="Share">Share</button>
+                        <a href="{% url "delete" bridge.id %}" onclick="return confirm('are you sure?');">
+                            <button class="Delete">Delete</button>
+                        </a>
+                        <a href="{{ bridge.URL }}" target="_blank">
+                            <button class="go">Go</button>
+                        </a>
+                    </li>
+                    {% empty %}
+                      <h4 class="no-links-yet">No links yet</h4>
+                      <p class="nothing-text">There are no links yet, please use the 
+                          <span class="Resaltador2">+</span> button 
+                            <br> to create one
+                          <span class="Resaltador2">...</span>
+                      </p>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div id="addLinkBtn" class="add_more">
+            <span class="material-symbols-outlined">
+               add
+            </span>
+            </div>
+        </section>
+    </main>
+
+<!--Formulario bonito que sale a la hora de hacer click en el boton de más-->
+<div id="modalOverlay" class="modal-overlay">
+
+  <form class="modal" method="post" action="{% url "create" %}">
+    {% csrf_token %}
+    <h2 style="text-align: center;">
+        Add new link<span style="color: #001FFF;">...</span></h2>
+      
+      <div class="contenedor_inputs">
+        <input 
+        type="url" 
+        name="url"  
+        placeholder="Paste your link" 
+        class="url">
+
+        <input 
+        type="text" 
+        name="title"  
+        placeholder="Title (optional)" 
+        class="title-link">
+
+      </div>
+
+        <div class="modal-actions">
+
+        <!--Este div es el que centra los botones de guardar y cancelar-->
+           <div class="fixer_container">
+              <button id="closeModal" class="cancel" type="button">Cancel</button>
+              <button class="primary" type="submit">Save</button>
+           </div>
+        <!--Este div es el de modal-actions-->
+        </div>  
+   </form>
+
+</div>
+<!--Fin del formulario-->
+
+</body>
+
+{% load static %}
+<script src="{% static "CentralLinks/scripts/script.js" %}"></script>
+
+
+</html>

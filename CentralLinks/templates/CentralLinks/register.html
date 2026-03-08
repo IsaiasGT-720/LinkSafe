@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LinkSafe es la herramienta minimalista para gestionar tus enlaces importantes. Rápido, seguro y siempre a mano.">
+
+<meta property="og:title" content="LinkSafe - Gestor de Enlaces">
+<meta property="og:description" content="Organiza tus links favoritos en un solo lugar.">
+<meta property="og:type" content="website">
+    <title>Login</title>
+  
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'CentralLinks/registers.css' %}">
+
+</head>
+
+<body class="Body">
+<div class="form-container">
+<form method="post" action="{% url 'register' %}" class="formulario">
+    {% csrf_token %}
+
+    <div class="fixer-title">
+    <p class="sign-in-title">Sign <span class="resaltador">In</span></p>
+    </div>
+
+    <input name="username" required placeholder="username" class="username-container">
+    <input type="password" name="password" required placeholder="password" class="password-container">
+    <input type="password" name="confirm" required placeholder="confirm" class="repeat-password">
+
+    <button type="submit"  class="submit-button">Create account</button>
+    
+    <p class="account-text">Already have an account?<br>
+        <a href="{% url 'login' %}" class="sign-in">Sign in</a>
+    </p>
+</form>
+</div>
+
+</body>
+</html>
