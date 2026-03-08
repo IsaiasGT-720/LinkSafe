@@ -1,1 +1,1 @@
-web: gunicorn LinkSafe.wsgi
+web: gunicorn LinkSafer.wsgi
